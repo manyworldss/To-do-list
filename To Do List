@@ -1,0 +1,39 @@
+
+import SwiftUI
+
+struct ContentView: View {
+    @State var todos: [String] = 
+    ["Meditate for 20 mins", "Go to the gym", "Cook Dinner", "Clean apartment", "Write some swift"
+                           ]
+    
+    @State var showingAlert = false
+    @State var newItem = ""
+    
+    func addNewItem() {
+        todos.append(newItem)
+        newItem = ""
+    }
+    
+    var body: some View {
+        NavigationStack {
+            List($todos, id: \.self, editActions: .all) {$todoItem in Text(todoItem)
+            }.navigationTitle("My to do list")
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            addNewItem()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+        } .alert("What's on the agenda for today?", isPresented: $showingAlert) {
+            TextField ("Add item here", text: $newItem)
+            Button {
+                addNewItem()
+            } label: {
+                Text("OK")
+            }
+        }
+    }
+}
